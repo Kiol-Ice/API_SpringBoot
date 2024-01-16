@@ -16,17 +16,23 @@ public class Team {
     @GeneratedValue
     private Long id;
 
-    @Column(name="id_team")
-    private Long idTeam;
+    // TODO List avec relation
+    @Column(name="id_joueur")
+    private Long idJoueur;
 
-    @Column(name="first_name")
-    private String firstName;
+    private String name;
 
-    @Column(name="last_name")
-    private String lastName;
+    @Column(name="current_tournament")
+    private String currentTournament;
 
-    private String position;
+    private teamLevel level;
 
+}
+
+enum teamLevel {
+    regional,
+    national,
+    international
 }
 
 
