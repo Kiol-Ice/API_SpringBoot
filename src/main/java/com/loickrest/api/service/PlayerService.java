@@ -26,26 +26,43 @@ public class PlayerService implements IPlayerService {
 	@Override
 	@Transactional(readOnly = true)
 	public Player findPlayer(Long id) {
+		Player result = null;
 
-		return this.PlayerRepository.findById(id).orElse(null);
+		if (id != null) {
+			result = this.PlayerRepository.findById(id).orElse(null);
+		} 
+
+		return result;
 	}
 
 	@Override
-	public Player createPlayer(Player Player) {
-		
-		return this.PlayerRepository.save(Player);
+	public Player createPlayer(Player player) {
+		Player result = null;
+
+		if (player != null) {
+			result = this.PlayerRepository.save(player);
+		} 
+
+		return result;
 	}
 
 	@Override
 	public void deletePlayer(Long id) {
-		
-		this.PlayerRepository.deleteById(id);
+		if (id != null) 
+		{
+			this.PlayerRepository.deleteById(id);
+		}
 	}
 
 	@Override
-	public Player savePlayer(Player foundPlayer) {
-		
-		return this.PlayerRepository.save(foundPlayer);
+	public Player savePlayer(Player player) {
+		Player result = null;
+
+		if (player != null) {
+			result = this.PlayerRepository.save(player);
+		} 
+
+		return result;
 	}
 	
 	
