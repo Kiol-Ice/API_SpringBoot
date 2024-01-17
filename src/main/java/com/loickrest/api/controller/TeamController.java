@@ -25,6 +25,9 @@ public class TeamController {
 	@Autowired
 	private TeamService TeamService;
 	
+
+	// Base CRUD
+
 	@GetMapping("/teams")
 	public List<Team> allTeams() {
 				
@@ -78,5 +81,12 @@ public class TeamController {
 		}
 		
 		return foundTeam;
+	}
+
+	// Players listing in Team
+	@GetMapping("/team/{id}/players")
+	public List<Player> playersFromTeamId(@PathVariable Long id) {
+		Team foundTeam = this.TeamService.findTeam(id);
+		return foundTeam.getPlayerList();
 	}
 }

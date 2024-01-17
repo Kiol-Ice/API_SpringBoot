@@ -22,6 +22,8 @@ public class PlayerController {
 	
 	@Autowired
 	private PlayerService PlayerService;
+
+	// Base Crud
 	
 	@GetMapping("/players")
 	public List<Player> allPlayers() {
@@ -70,5 +72,12 @@ public class PlayerController {
 		}
 		
 		return foundPlayer;
+	}
+
+	// Get Team from player id
+	@GetMapping("/player/{id}/team")
+	public Team teamFromPlayerId(@PathVariable Long id) {
+		Player foundPlayer = this.PlayerService.findPlayer(id);
+		return foundPlayer.getTeam();
 	}
 }

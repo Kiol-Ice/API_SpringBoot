@@ -1,5 +1,3 @@
-console.log("Test API")
-
 const axios = require('axios');
 
 const apiUrl = 'http://localhost:9000';
@@ -12,58 +10,149 @@ const handleError = (error) => {
   }
 };
 
-// Exemple de requête POST (Create)
-const newData = {
+const newPlayerWithTeam = {
     "team": {
         "name": "PSG",
         "currentTournament": "ligue 1",
         "level": 2
     },
-    "firstName": "loick",
-    "lastName": "ramadier",
+    "firstName": "kylian",
+    "lastName": "mbappe",
     "position": "attaquant"
 };
 
-const resourceIdToUpdate = '1';
-const updatedData = {
+const updatedPlayerAndTeam = {
     "team": {
-        "id":1,
         "name": "ASSE",
-        "currentTournament": "ligue 1",
-        "level": 2
+        "currentTournament": "ligue 2",
+        "level": 1
     },
-    "firstName": "loick",
-    "lastName": "ramadier",
-    "position": "defenseur"
+    "firstName": "kylian",
+    "lastName": "mbappe",
+    "position": "milieu"
 };
 
-const resourceIdToDelete = '1';
+const newPlayerToDelete = {
+    "team": null,
+    "firstName": "zinedine",
+    "lastName": "zidane",
+    "position": "milieu"
+};
 
-  // Fonction asynchrone pour effectuer toutes les opérations CRUD
-const performCrudOperations = async () => {
+const performCrudOperationsForPlayer = async () => {
     try {
     // Requête POST (Create)
-        const postResponse = await axios.post(`${apiUrl}/player`, newData);
-        console.log('Résultat de la requête POST:', postResponse.data);
+        const postResponse = await axios.post(`${apiUrl}/player`, newPlayerWithTeam);
+        console.log('\nRésultat de la requête POST, création d\'un nouveau joueur :', postResponse.data);
+        var idNewPlayer = postResponse.data.id;
 
         // Requête GET (Read)
         const getResponse = await axios.get(`${apiUrl}/players`);
-        console.log('Résultat de la requête GET:', getResponse.data);
+        console.log('\nRésultat de la requête GET:', getResponse.data);
     
         // Requête PUT (Update)
-        const resourceIdToUpdate = '1';
-        const putResponse = await axios.put(`${apiUrl}/player/${resourceIdToUpdate}`, updatedData);
-        console.log('Résultat de la requête PUT:', putResponse.data);
+        const putResponse = await axios.put(`${apiUrl}/player/${idNewPlayer}`, updatedPlayerAndTeam);
+        console.log('\nRésultat de la requête PUT, modification du joueurs et de son équipe:', putResponse.data);
     
+        // Requête GET (Read) de l'équipe du joueur par son id
+        const getResponseTeamFromPlayer = await axios.get(`${apiUrl}/player/${idNewPlayer}/team`);
+        console.log('\nRésultat de la requête GET, de l\'équipe du joueur par son id :', getResponseTeamFromPlayer.data);
+
         // Requête DELETE (Delete)
-        const resourceIdToDelete = '1';
-        // await axios.delete(`${apiUrl}/player/${resourceIdToDelete}`);
-        // console.log('Ressource supprimée avec succès.');
+        const postResponseToDelete = await axios.post(`${apiUrl}/player`, newPlayerToDelete);
+        console.log('\nRésultat de la requête POST:', postResponseToDelete.data);
+        var idNewPlayerToDelete = postResponseToDelete.data.id;
+
+        await axios.delete(`${apiUrl}/player/${idNewPlayerToDelete}`);
+        console.log('\nPlayer', idNewPlayerToDelete ,' supprimée avec succès.');
 
     } catch (error) {
         handleError(error);
     }
 };
-  
-// Appel de la fonction principale
-performCrudOperations();
+
+const newTeamWithPlayer = {
+    "playerList": [
+        {
+            "firstName": "pablo",
+            "lastName": "neussaint",
+            "position": "attaquant"
+        },
+        {
+            "firstName": "jeremy",
+            "lastName": "morel",
+            "position": "millieu"
+        },
+        {
+            "firstName": "loick",
+            "lastName": "ramadier",
+            "position": "defenseur"
+        }
+    ],
+    "name": "Foo'Tse",
+    "currentTournament": "aucun",
+    "level": 0
+};
+
+const newTeamToDelete = {
+    "playerList": [],
+    "name": "FootLegends",
+    "currentTournament": "aucun",
+    "level": 2
+};
+
+const performCrudOperationsForTeam = async () => {
+    try {
+    // Requête POST (Create)
+        const postResponse = await axios.post(`${apiUrl}/team`, newTeamWithPlayer);
+        console.log('\nRésultat de la requête POST, création nouvelle équipe :', postResponse.data);
+        var idNewteam = postResponse.data.id;
+
+        // Requête GET (Read)
+        const getResponse = await axios.get(`${apiUrl}/team/${idNewteam}`);
+        console.log('\nRésultat de la requête GET de la nouvelle équipe :', getResponse.data);
+    
+        // Requête PUT (Update)
+        const updatedTeamTournament = {
+            "id": postResponse.data.id,
+            "level": postResponse.data.level,
+            "name": postResponse.data.name,
+            "currentTournament": "tournoi BDE"
+        };
+        const putResponse = await axios.put(`${apiUrl}/team/${idNewteam}`, updatedTeamTournament);
+        console.log('\nRésultat de la requête PUT, modification team:', putResponse.data);
+    
+        // Requête DELETE (Delete)
+        const postResponseToDelete = await axios.post(`${apiUrl}/team`, newTeamToDelete);
+        console.log('\nRésultat de la requête POST:', postResponseToDelete.data);
+        var idNewteamToDelete = postResponseToDelete.data.id;
+        
+        await axios.delete(`${apiUrl}/team/${idNewteamToDelete}`);
+        console.log('\nTeam ', idNewteamToDelete, ' supprimée avec succès.');
+
+        // Requête GET (Read)
+        const getResponsePlayers = await axios.get(`${apiUrl}/players`);
+        console.log('\nRésultat de la requête GET de tous les joueurs:', getResponsePlayers.data);
+        
+        // Requête GET (Read) des joueurs d'une équipe
+        const getResponsePlayerFromTeam = await axios.get(`${apiUrl}/team/${idNewteam}/players`);
+        console.log('\nRésultat de la requête GET des joueurs de l\'équipe:', getResponsePlayerFromTeam.data);
+
+    } catch (error) {
+        handleError(error);
+    }
+};
+
+// ----------------- Exec --------------------
+
+const ApiTest = async () => {
+    console.log("Test API Player")
+
+    await performCrudOperationsForPlayer();
+
+    console.log("Test API Team")
+
+    await performCrudOperationsForTeam();
+}
+
+ApiTest();
