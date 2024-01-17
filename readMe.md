@@ -13,11 +13,11 @@
 - le script index.js permet de lancer une série de requête à l'aide d'axios. Ces requêtes couvrent presques toutes les routes disponibles de l'API
 
 - lancement du script :  
-placement dans le dossier  
+>placement dans le dossier  
 `cd js`  
-installation des dépendances  
+>installation des dépendances  
 `npm i`  
-execution  
+>execution  
 `npm run-script test-api`  
-execution bis  
+>execution bis  
 `node ./index.js`  
