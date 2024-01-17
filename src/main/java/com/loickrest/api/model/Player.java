@@ -34,6 +34,9 @@ public class Player {
 
     private String position;
 
+    public Player() {
+    }
+
     public Player(String firstName, String lastName, String position) {
         this.firstName = firstName;
         this.lastName = lastName;

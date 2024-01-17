@@ -34,6 +34,9 @@ public class Team {
 
     private TeamLevel level;
 
+    public Team() {
+    }
+
     public Team(String name, String currentTournament, TeamLevel level) {
         this.name = name;
         this.currentTournament = currentTournament;
