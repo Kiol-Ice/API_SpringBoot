@@ -15,12 +15,15 @@
 - lancement du script :
 
 >placement dans le dossier  
+>
 `cd js`  
 
 >installation des dépendances  
+>
 `npm i`  
 
 >execution  
+>
 `npm run-script test-api`  
 
 >execution bis  
