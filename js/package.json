@@ -4,7 +4,7 @@
   "description": "API test script",
   "main": "index.js",
   "scripts": {
-    "build": "node index.js"
+    "test-api": "node index.js"
   },
   "author": "loick",
   "license": "ISC",
