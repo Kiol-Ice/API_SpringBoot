@@ -59,7 +59,7 @@ public class PlayerController {
 
 		Player foundPlayer = this.PlayerService.findPlayer(id);
 		
-		if (player != null) {
+		if (player != null && foundPlayer != null) {
 			
 			foundPlayer.setLastName(player.getLastName());
 			foundPlayer.setFirstName(player.getFirstName());

@@ -67,7 +67,7 @@ public class TeamController {
 
 		Team foundTeam = this.TeamService.findTeam(id);
 		
-		if (team != null) {
+		if (team != null && foundTeam != null) {
 			
 			foundTeam.setName(team.getName());
             foundTeam.setPlayerList(team.getPlayerList());
