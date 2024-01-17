@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.loickrest.api.model.Player;
+import com.loickrest.api.model.Team;
 import com.loickrest.api.service.PlayerService;
 
 
@@ -36,8 +37,15 @@ public class PlayerController {
 	
 	@PostMapping("/player")
 	public Player createPlayer(@RequestBody Player player) {
+		Player newPlayer = new Player(player.getFirstName(), player.getLastName(), player.getPosition());
 		
-		return this.PlayerService.createPlayer(player);
+		if (player.getTeam() != null) {
+			Team playerTeam = player.getTeam();
+			Team newTeam = new Team(playerTeam.getName(), playerTeam.getCurrentTournament(), playerTeam.getLevel());
+			newPlayer.setTeam(newTeam);
+		}
+		
+		return this.PlayerService.createPlayer(newPlayer);
 	}
 	
 	@DeleteMapping("/player/{id}")
@@ -55,7 +63,7 @@ public class PlayerController {
 			
 			foundPlayer.setLastName(player.getLastName());
 			foundPlayer.setFirstName(player.getFirstName());
-			foundPlayer.setIdTeam(player.getIdTeam());
+			foundPlayer.setTeam(player.getTeam());
 			foundPlayer.setPosition(player.getPosition());
 			
 			foundPlayer = this.PlayerService.savePlayer(foundPlayer);

@@ -11,4 +11,6 @@ public class ApiApplication {
 	}
 	// Console BDD
 	// http://localhost:9000/h2-console
+	// netstat -a -o -n
+	// taskkill /F /PID
 }

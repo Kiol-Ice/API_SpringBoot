@@ -1,5 +1,6 @@
 package com.loickrest.api.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.loickrest.api.model.Player;
 import com.loickrest.api.model.Team;
+import com.loickrest.api.model.TeamLevel;
 import com.loickrest.api.service.TeamService;
 
 
@@ -37,7 +40,20 @@ public class TeamController {
 	@PostMapping("/team")
 	public Team createTeam(@RequestBody Team team) {
 		
-		return this.TeamService.createTeam(team);
+        Team newTeam = new Team(team.getName(), team.getCurrentTournament(), TeamLevel.valueOf(team.getLevel().toString()));
+        
+		if (team.getPlayerList() != null) {
+			List<Player> newPlayers = new ArrayList<>();
+			for (Player player : team.getPlayerList()) {
+				Player newPlayer = new Player(player.getFirstName(), player.getLastName(), player.getPosition());
+				newPlayer.setTeam(newTeam);
+				newPlayers.add(newPlayer);
+			}
+
+        	newTeam.setPlayerList(newPlayers);
+		}
+        
+		return this.TeamService.createTeam(newTeam);
 	}
 	
 	@DeleteMapping("/team/{id}")
@@ -54,7 +70,7 @@ public class TeamController {
 		if (team != null) {
 			
 			foundTeam.setName(team.getName());
-            foundTeam.setIdJoueur(team.getIdJoueur());
+            foundTeam.setPlayerList(team.getPlayerList());
 			foundTeam.setCurrentTournament(team.getCurrentTournament());
             foundTeam.setLevel(team.getLevel());
 			

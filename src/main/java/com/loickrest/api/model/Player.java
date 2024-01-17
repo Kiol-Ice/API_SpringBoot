@@ -1,9 +1,14 @@
 package com.loickrest.api.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -16,8 +21,10 @@ public class Player {
     @GeneratedValue
     private Long id;
 
-    @Column(name="id_team")
-    private Long idTeam;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_team")
+    @JsonBackReference
+    private Team team;
 
     @Column(name="first_name")
     private String firstName;
@@ -27,6 +34,11 @@ public class Player {
 
     private String position;
 
+    public Player(String firstName, String lastName, String position) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.position = position;
+    }
 }
 
 
